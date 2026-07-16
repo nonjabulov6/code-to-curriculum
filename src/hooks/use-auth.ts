@@ -7,6 +7,7 @@ export interface AuthState {
   session: Session | null;
   loading: boolean;
   isAdmin: boolean;
+  isFacilitator: boolean;
 }
 
 export function useAuth(): AuthState {
