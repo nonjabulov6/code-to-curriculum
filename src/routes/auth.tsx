@@ -25,6 +25,8 @@ export const Route = createFileRoute("/auth")({
   component: AuthPage,
 });
 
+type Role = "student" | "facilitator";
+
 function AuthPage() {
   const { mode } = Route.useSearch();
   const navigate = useNavigate();
@@ -32,11 +34,19 @@ function AuthPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [fullName, setFullName] = useState("");
+  const [role, setRole] = useState<Role>("student");
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    supabase.auth.getSession().then(({ data }) => {
-      if (data.session) navigate({ to: "/dashboard", replace: true });
+    supabase.auth.getSession().then(async ({ data }) => {
+      if (!data.session) return;
+      // Complete pending facilitator role after Google sign-up
+      const pending = sessionStorage.getItem("pending_role");
+      if (pending === "facilitator") {
+        sessionStorage.removeItem("pending_role");
+        await supabase.from("user_roles").insert({ user_id: data.session.user.id, role: "facilitator" });
+      }
+      navigate({ to: "/dashboard", replace: true });
     });
   }, [navigate]);
 
@@ -55,20 +65,27 @@ function AuthPage() {
     setLoading(true);
     const { error } = await supabase.auth.signUp({
       email, password,
-      options: { data: { full_name: fullName }, emailRedirectTo: window.location.origin },
+      options: { data: { full_name: fullName, role }, emailRedirectTo: window.location.origin },
     });
     setLoading(false);
     if (error) { toast.error(error.message); return; }
-    toast.success("Account created — welcome to LearnHub!");
+    toast.success(`Account created — welcome ${role === "facilitator" ? "facilitator" : "learner"}!`);
     navigate({ to: "/dashboard" });
   }
 
   async function signInGoogle() {
+    if (tab === "signup") sessionStorage.setItem("pending_role", role);
     const result = await lovable.auth.signInWithOAuth("google", { redirect_uri: window.location.origin });
     if (result.error) { toast.error("Google sign-in failed"); return; }
     if (result.redirected) return;
+    if (tab === "signup" && role === "facilitator") {
+      const { data } = await supabase.auth.getSession();
+      if (data.session) await supabase.from("user_roles").insert({ user_id: data.session.user.id, role: "facilitator" });
+    }
+    sessionStorage.removeItem("pending_role");
     navigate({ to: "/dashboard" });
   }
+
 
   return (
     <PageShell>
@@ -104,11 +121,27 @@ function AuthPage() {
               </form>
             </TabsContent>
             <TabsContent value="signup">
+              <div className="mb-4">
+                <Label className="mb-2 block">I'm joining as</Label>
+                <div className="grid grid-cols-2 gap-2">
+                  {(["student", "facilitator"] as const).map((r) => (
+                    <button
+                      key={r}
+                      type="button"
+                      onClick={() => setRole(r)}
+                      className={`rounded-md border p-3 text-left text-sm transition ${role === r ? "border-primary bg-accent" : "border-input hover:bg-accent/50"}`}
+                    >
+                      <div className="font-semibold capitalize">{r === "student" ? "Learner" : "Facilitator"}</div>
+                      <div className="text-xs text-muted-foreground">{r === "student" ? "Enroll and take courses" : "Create and manage courses"}</div>
+                    </button>
+                  ))}
+                </div>
+              </div>
               <form onSubmit={signUp} className="space-y-4">
                 <div><Label htmlFor="name">Full name</Label><Input id="name" value={fullName} onChange={(e) => setFullName(e.target.value)} required /></div>
                 <div><Label htmlFor="email-up">Email</Label><Input id="email-up" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required autoComplete="email" /></div>
                 <div><Label htmlFor="pw-up">Password</Label><Input id="pw-up" type="password" value={password} onChange={(e) => setPassword(e.target.value)} required minLength={8} autoComplete="new-password" /><p className="mt-1 text-xs text-muted-foreground">At least 8 characters.</p></div>
-                <Button type="submit" className="w-full" disabled={loading}>{loading ? "Creating account…" : "Create account"}</Button>
+                <Button type="submit" className="w-full" disabled={loading}>{loading ? "Creating account…" : `Create ${role === "facilitator" ? "facilitator" : "learner"} account`}</Button>
               </form>
             </TabsContent>
           </Tabs>
