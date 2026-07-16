@@ -14,7 +14,7 @@ const publicLinks = [
 ] as const;
 
 export function SiteNav() {
-  const { user, isAdmin, loading } = useAuth();
+  const { user, isAdmin, isFacilitator, loading } = useAuth();
   const navigate = useNavigate();
   const qc = useQueryClient();
   const [open, setOpen] = useState(false);
