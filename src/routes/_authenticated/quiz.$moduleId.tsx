@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { PageShell } from "@/components/page-shell";
@@ -8,7 +8,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/use-auth";
-import { ArrowLeft, Trophy } from "lucide-react";
+import { ArrowLeft, Trophy, PartyPopper, ArrowRight, GraduationCap } from "lucide-react";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/_authenticated/quiz/$moduleId")({
@@ -18,19 +18,27 @@ export const Route = createFileRoute("/_authenticated/quiz/$moduleId")({
 
 interface Question { id: string; question: string; options: string[]; correct_index: number }
 
+const PASS_THRESHOLD = 0.6;
+
 function QuizPage() {
   const { moduleId } = Route.useParams();
   const { user } = useAuth();
+  const navigate = useNavigate();
   const [answers, setAnswers] = useState<Record<string, number>>({});
   const [submitted, setSubmitted] = useState(false);
   const [score, setScore] = useState(0);
 
   const q = useQuery({
-    queryKey: ["quiz", moduleId],
+    queryKey: ["quiz-context", moduleId],
     queryFn: async () => {
       const { data: mod } = await supabase.from("modules").select("*").eq("id", moduleId).maybeSingle();
       const { data: qs } = await supabase.from("quiz_questions").select("*").eq("module_id", moduleId).order("position");
-      return { module: mod, questions: (qs ?? []) as unknown as Question[] };
+      let siblings: { id: string; position: number; title: string }[] = [];
+      if (mod) {
+        const { data: sibs } = await supabase.from("modules").select("id,position,title").eq("course_id", mod.course_id).order("position");
+        siblings = sibs ?? [];
+      }
+      return { module: mod, questions: (qs ?? []) as unknown as Question[], siblings };
     },
   });
 
@@ -42,19 +50,28 @@ function QuizPage() {
     setScore(correct);
     setSubmitted(true);
     await supabase.from("quiz_attempts").insert({ user_id: user!.id, module_id: moduleId, score: correct, total: questions.length });
-    if (correct === questions.length) {
-      await supabase.from("module_progress").upsert({ user_id: user!.id, module_id: moduleId, completed: true, completed_at: new Date().toISOString() }, { onConflict: "user_id,module_id" });
-      toast.success("Perfect score! Module completed.");
+    const ratio = questions.length ? correct / questions.length : 0;
+    if (ratio >= PASS_THRESHOLD) {
+      await supabase.from("module_progress").upsert(
+        { user_id: user!.id, module_id: moduleId, completed: true, completed_at: new Date().toISOString() },
+        { onConflict: "user_id,module_id" },
+      );
+      toast.success(`You passed with ${correct} / ${questions.length}!`);
     } else {
-      toast.info(`You scored ${correct} / ${questions.length}`);
+      toast.info(`You scored ${correct} / ${questions.length}. Try again to pass.`);
     }
   }
 
   if (q.isLoading) return <PageShell><div className="p-20 text-center text-muted-foreground">Loading…</div></PageShell>;
   if (!q.data?.module) return <PageShell><div className="p-20 text-center">Module not found.</div></PageShell>;
 
-  const { module, questions } = q.data;
+  const { module, questions, siblings } = q.data;
   const allAnswered = questions.length > 0 && questions.every((qu) => answers[qu.id] !== undefined);
+  const currentIdx = siblings.findIndex((s) => s.id === moduleId);
+  const nextModule = currentIdx >= 0 ? siblings[currentIdx + 1] : undefined;
+  const isLast = currentIdx >= 0 && currentIdx === siblings.length - 1;
+  const ratio = questions.length ? score / questions.length : 0;
+  const passed = ratio >= PASS_THRESHOLD;
 
   return (
     <PageShell>
@@ -69,13 +86,37 @@ function QuizPage() {
       <section className="mx-auto max-w-3xl px-4 py-10">
         {submitted ? (
           <Card className="p-10 text-center shadow-elegant">
-            <Trophy className="mx-auto h-14 w-14 text-primary" />
-            <h2 className="mt-4 font-display text-3xl font-bold">Your score</h2>
+            {passed ? <PartyPopper className="mx-auto h-14 w-14 text-primary" /> : <Trophy className="mx-auto h-14 w-14 text-muted-foreground" />}
+            <h2 className="mt-4 font-display text-3xl font-bold">
+              {passed ? "Congratulations!" : "Your score"}
+            </h2>
             <div className="mt-2 text-5xl font-bold text-primary">{score} / {questions.length}</div>
-            <p className="mt-3 text-muted-foreground">{score === questions.length ? "Perfect! Module completed." : "Great effort — review the lessons and try again."}</p>
+            <p className="mt-3 text-muted-foreground">
+              {passed
+                ? `Great work — you've completed ${module.title}!`
+                : "You need at least 60% to pass. Review the lessons and try again."}
+            </p>
+
             <div className="mt-8 flex flex-wrap justify-center gap-3">
-              <Button variant="outline" onClick={() => { setSubmitted(false); setAnswers({}); }}>Retake quiz</Button>
-              <Button asChild><Link to="/dashboard">Back to dashboard</Link></Button>
+              {!passed && (
+                <>
+                  <Button variant="outline" onClick={() => { setSubmitted(false); setAnswers({}); }}>Retake quiz</Button>
+                  <Button asChild variant="secondary"><Link to="/lessons/$moduleId" params={{ moduleId }}>Review lessons</Link></Button>
+                </>
+              )}
+              {passed && !isLast && nextModule && (
+                <Button size="lg" onClick={() => navigate({ to: "/lessons/$moduleId", params: { moduleId: nextModule.id } })}>
+                  Next Module: {nextModule.title} <ArrowRight className="ml-2 h-4 w-4" />
+                </Button>
+              )}
+              {passed && isLast && (
+                <Button size="lg" onClick={() => navigate({ to: "/course-completed" })}>
+                  <GraduationCap className="mr-2 h-4 w-4" /> Complete Course
+                </Button>
+              )}
+              {passed && (
+                <Button variant="outline" asChild><Link to="/dashboard">Back to dashboard</Link></Button>
+              )}
             </div>
           </Card>
         ) : questions.length === 0 ? (
