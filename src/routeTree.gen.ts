@@ -19,6 +19,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedProfileRouteImport } from './routes/_authenticated/profile'
 import { Route as AuthenticatedFacilitatorRouteImport } from './routes/_authenticated/facilitator'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
+import { Route as AuthenticatedCourseCompletedRouteImport } from './routes/_authenticated/course-completed'
 import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
 import { Route as AuthenticatedQuizModuleIdRouteImport } from './routes/_authenticated/quiz.$moduleId'
 import { Route as AuthenticatedLessonsModuleIdRouteImport } from './routes/_authenticated/lessons.$moduleId'
@@ -73,6 +74,12 @@ const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
   path: '/dashboard',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedCourseCompletedRoute =
+  AuthenticatedCourseCompletedRouteImport.update({
+    id: '/course-completed',
+    path: '/course-completed',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedAdminRoute = AuthenticatedAdminRouteImport.update({
   id: '/admin',
   path: '/admin',
@@ -99,6 +106,7 @@ export interface FileRoutesByFullPath {
   '/course': typeof CourseRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/admin': typeof AuthenticatedAdminRoute
+  '/course-completed': typeof AuthenticatedCourseCompletedRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/facilitator': typeof AuthenticatedFacilitatorRoute
   '/profile': typeof AuthenticatedProfileRoute
@@ -113,6 +121,7 @@ export interface FileRoutesByTo {
   '/course': typeof CourseRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/admin': typeof AuthenticatedAdminRoute
+  '/course-completed': typeof AuthenticatedCourseCompletedRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/facilitator': typeof AuthenticatedFacilitatorRoute
   '/profile': typeof AuthenticatedProfileRoute
@@ -129,6 +138,7 @@ export interface FileRoutesById {
   '/course': typeof CourseRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/_authenticated/admin': typeof AuthenticatedAdminRoute
+  '/_authenticated/course-completed': typeof AuthenticatedCourseCompletedRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
   '/_authenticated/facilitator': typeof AuthenticatedFacilitatorRoute
   '/_authenticated/profile': typeof AuthenticatedProfileRoute
@@ -145,6 +155,7 @@ export interface FileRouteTypes {
     | '/course'
     | '/sitemap.xml'
     | '/admin'
+    | '/course-completed'
     | '/dashboard'
     | '/facilitator'
     | '/profile'
@@ -159,6 +170,7 @@ export interface FileRouteTypes {
     | '/course'
     | '/sitemap.xml'
     | '/admin'
+    | '/course-completed'
     | '/dashboard'
     | '/facilitator'
     | '/profile'
@@ -174,6 +186,7 @@ export interface FileRouteTypes {
     | '/course'
     | '/sitemap.xml'
     | '/_authenticated/admin'
+    | '/_authenticated/course-completed'
     | '/_authenticated/dashboard'
     | '/_authenticated/facilitator'
     | '/_authenticated/profile'
@@ -263,6 +276,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedDashboardRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/course-completed': {
+      id: '/_authenticated/course-completed'
+      path: '/course-completed'
+      fullPath: '/course-completed'
+      preLoaderRoute: typeof AuthenticatedCourseCompletedRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/admin': {
       id: '/_authenticated/admin'
       path: '/admin'
@@ -289,6 +309,7 @@ declare module '@tanstack/react-router' {
 
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedAdminRoute: typeof AuthenticatedAdminRoute
+  AuthenticatedCourseCompletedRoute: typeof AuthenticatedCourseCompletedRoute
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
   AuthenticatedFacilitatorRoute: typeof AuthenticatedFacilitatorRoute
   AuthenticatedProfileRoute: typeof AuthenticatedProfileRoute
@@ -298,6 +319,7 @@ interface AuthenticatedRouteRouteChildren {
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedAdminRoute: AuthenticatedAdminRoute,
+  AuthenticatedCourseCompletedRoute: AuthenticatedCourseCompletedRoute,
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
   AuthenticatedFacilitatorRoute: AuthenticatedFacilitatorRoute,
   AuthenticatedProfileRoute: AuthenticatedProfileRoute,
