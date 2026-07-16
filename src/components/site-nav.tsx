@@ -91,6 +91,7 @@ export function SiteNav() {
               <Link key={l.to} to={l.to} onClick={() => setOpen(false)} className="rounded-md px-3 py-2 text-sm font-medium text-muted-foreground hover:bg-accent">{l.label}</Link>
             ))}
             {user && <Link to="/dashboard" onClick={() => setOpen(false)} className="rounded-md px-3 py-2 text-sm font-medium">Dashboard</Link>}
+            {isFacilitator && !isAdmin && <Link to="/facilitator" onClick={() => setOpen(false)} className="rounded-md px-3 py-2 text-sm font-medium">Facilitator</Link>}
             {isAdmin && <Link to="/admin" onClick={() => setOpen(false)} className="rounded-md px-3 py-2 text-sm font-medium">Admin</Link>}
             {user ? (
               <>
