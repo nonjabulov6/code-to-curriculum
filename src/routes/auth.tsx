@@ -121,11 +121,27 @@ function AuthPage() {
               </form>
             </TabsContent>
             <TabsContent value="signup">
+              <div className="mb-4">
+                <Label className="mb-2 block">I'm joining as</Label>
+                <div className="grid grid-cols-2 gap-2">
+                  {(["student", "facilitator"] as const).map((r) => (
+                    <button
+                      key={r}
+                      type="button"
+                      onClick={() => setRole(r)}
+                      className={`rounded-md border p-3 text-left text-sm transition ${role === r ? "border-primary bg-accent" : "border-input hover:bg-accent/50"}`}
+                    >
+                      <div className="font-semibold capitalize">{r === "student" ? "Learner" : "Facilitator"}</div>
+                      <div className="text-xs text-muted-foreground">{r === "student" ? "Enroll and take courses" : "Create and manage courses"}</div>
+                    </button>
+                  ))}
+                </div>
+              </div>
               <form onSubmit={signUp} className="space-y-4">
                 <div><Label htmlFor="name">Full name</Label><Input id="name" value={fullName} onChange={(e) => setFullName(e.target.value)} required /></div>
                 <div><Label htmlFor="email-up">Email</Label><Input id="email-up" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required autoComplete="email" /></div>
                 <div><Label htmlFor="pw-up">Password</Label><Input id="pw-up" type="password" value={password} onChange={(e) => setPassword(e.target.value)} required minLength={8} autoComplete="new-password" /><p className="mt-1 text-xs text-muted-foreground">At least 8 characters.</p></div>
-                <Button type="submit" className="w-full" disabled={loading}>{loading ? "Creating account…" : "Create account"}</Button>
+                <Button type="submit" className="w-full" disabled={loading}>{loading ? "Creating account…" : `Create ${role === "facilitator" ? "facilitator" : "learner"} account`}</Button>
               </form>
             </TabsContent>
           </Tabs>
