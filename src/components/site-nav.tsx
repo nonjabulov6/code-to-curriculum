@@ -53,6 +53,11 @@ export function SiteNav() {
               Dashboard
             </Link>
           )}
+          {isFacilitator && !isAdmin && (
+            <Link to="/facilitator" className="rounded-md px-3 py-2 text-sm font-medium text-muted-foreground hover:bg-accent hover:text-accent-foreground" activeProps={{ className: "text-primary bg-accent" }}>
+              Facilitator
+            </Link>
+          )}
           {isAdmin && (
             <Link to="/admin" className="rounded-md px-3 py-2 text-sm font-medium text-muted-foreground hover:bg-accent hover:text-accent-foreground" activeProps={{ className: "text-primary bg-accent" }}>
               Admin
