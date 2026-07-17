@@ -10,6 +10,11 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
+import { Route as ResourcesRouteImport } from './routes/resources'
+import { Route as LearningHubRouteImport } from './routes/learning-hub'
+import { Route as FaqsRouteImport } from './routes/faqs'
+import { Route as CurriculumRouteImport } from './routes/curriculum'
+import { Route as CoursesRouteImport } from './routes/courses'
 import { Route as CourseRouteImport } from './routes/course'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as AuthRouteImport } from './routes/auth'
@@ -17,6 +22,7 @@ import { Route as AboutRouteImport } from './routes/about'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedProfileRouteImport } from './routes/_authenticated/profile'
+import { Route as AuthenticatedFinalExamRouteImport } from './routes/_authenticated/final-exam'
 import { Route as AuthenticatedFacilitatorRouteImport } from './routes/_authenticated/facilitator'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as AuthenticatedCourseCompletedRouteImport } from './routes/_authenticated/course-completed'
@@ -27,6 +33,31 @@ import { Route as AuthenticatedLessonsModuleIdRouteImport } from './routes/_auth
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
   id: '/sitemap.xml',
   path: '/sitemap.xml',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ResourcesRoute = ResourcesRouteImport.update({
+  id: '/resources',
+  path: '/resources',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LearningHubRoute = LearningHubRouteImport.update({
+  id: '/learning-hub',
+  path: '/learning-hub',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FaqsRoute = FaqsRouteImport.update({
+  id: '/faqs',
+  path: '/faqs',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CurriculumRoute = CurriculumRouteImport.update({
+  id: '/curriculum',
+  path: '/curriculum',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CoursesRoute = CoursesRouteImport.update({
+  id: '/courses',
+  path: '/courses',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CourseRoute = CourseRouteImport.update({
@@ -61,6 +92,11 @@ const IndexRoute = IndexRouteImport.update({
 const AuthenticatedProfileRoute = AuthenticatedProfileRouteImport.update({
   id: '/profile',
   path: '/profile',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedFinalExamRoute = AuthenticatedFinalExamRouteImport.update({
+  id: '/final-exam',
+  path: '/final-exam',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthenticatedFacilitatorRoute =
@@ -104,11 +140,17 @@ export interface FileRoutesByFullPath {
   '/auth': typeof AuthRoute
   '/contact': typeof ContactRoute
   '/course': typeof CourseRoute
+  '/courses': typeof CoursesRoute
+  '/curriculum': typeof CurriculumRoute
+  '/faqs': typeof FaqsRoute
+  '/learning-hub': typeof LearningHubRoute
+  '/resources': typeof ResourcesRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/admin': typeof AuthenticatedAdminRoute
   '/course-completed': typeof AuthenticatedCourseCompletedRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/facilitator': typeof AuthenticatedFacilitatorRoute
+  '/final-exam': typeof AuthenticatedFinalExamRoute
   '/profile': typeof AuthenticatedProfileRoute
   '/lessons/$moduleId': typeof AuthenticatedLessonsModuleIdRoute
   '/quiz/$moduleId': typeof AuthenticatedQuizModuleIdRoute
@@ -119,11 +161,17 @@ export interface FileRoutesByTo {
   '/auth': typeof AuthRoute
   '/contact': typeof ContactRoute
   '/course': typeof CourseRoute
+  '/courses': typeof CoursesRoute
+  '/curriculum': typeof CurriculumRoute
+  '/faqs': typeof FaqsRoute
+  '/learning-hub': typeof LearningHubRoute
+  '/resources': typeof ResourcesRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/admin': typeof AuthenticatedAdminRoute
   '/course-completed': typeof AuthenticatedCourseCompletedRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/facilitator': typeof AuthenticatedFacilitatorRoute
+  '/final-exam': typeof AuthenticatedFinalExamRoute
   '/profile': typeof AuthenticatedProfileRoute
   '/lessons/$moduleId': typeof AuthenticatedLessonsModuleIdRoute
   '/quiz/$moduleId': typeof AuthenticatedQuizModuleIdRoute
@@ -136,11 +184,17 @@ export interface FileRoutesById {
   '/auth': typeof AuthRoute
   '/contact': typeof ContactRoute
   '/course': typeof CourseRoute
+  '/courses': typeof CoursesRoute
+  '/curriculum': typeof CurriculumRoute
+  '/faqs': typeof FaqsRoute
+  '/learning-hub': typeof LearningHubRoute
+  '/resources': typeof ResourcesRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/_authenticated/admin': typeof AuthenticatedAdminRoute
   '/_authenticated/course-completed': typeof AuthenticatedCourseCompletedRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
   '/_authenticated/facilitator': typeof AuthenticatedFacilitatorRoute
+  '/_authenticated/final-exam': typeof AuthenticatedFinalExamRoute
   '/_authenticated/profile': typeof AuthenticatedProfileRoute
   '/_authenticated/lessons/$moduleId': typeof AuthenticatedLessonsModuleIdRoute
   '/_authenticated/quiz/$moduleId': typeof AuthenticatedQuizModuleIdRoute
@@ -153,11 +207,17 @@ export interface FileRouteTypes {
     | '/auth'
     | '/contact'
     | '/course'
+    | '/courses'
+    | '/curriculum'
+    | '/faqs'
+    | '/learning-hub'
+    | '/resources'
     | '/sitemap.xml'
     | '/admin'
     | '/course-completed'
     | '/dashboard'
     | '/facilitator'
+    | '/final-exam'
     | '/profile'
     | '/lessons/$moduleId'
     | '/quiz/$moduleId'
@@ -168,11 +228,17 @@ export interface FileRouteTypes {
     | '/auth'
     | '/contact'
     | '/course'
+    | '/courses'
+    | '/curriculum'
+    | '/faqs'
+    | '/learning-hub'
+    | '/resources'
     | '/sitemap.xml'
     | '/admin'
     | '/course-completed'
     | '/dashboard'
     | '/facilitator'
+    | '/final-exam'
     | '/profile'
     | '/lessons/$moduleId'
     | '/quiz/$moduleId'
@@ -184,11 +250,17 @@ export interface FileRouteTypes {
     | '/auth'
     | '/contact'
     | '/course'
+    | '/courses'
+    | '/curriculum'
+    | '/faqs'
+    | '/learning-hub'
+    | '/resources'
     | '/sitemap.xml'
     | '/_authenticated/admin'
     | '/_authenticated/course-completed'
     | '/_authenticated/dashboard'
     | '/_authenticated/facilitator'
+    | '/_authenticated/final-exam'
     | '/_authenticated/profile'
     | '/_authenticated/lessons/$moduleId'
     | '/_authenticated/quiz/$moduleId'
@@ -201,6 +273,11 @@ export interface RootRouteChildren {
   AuthRoute: typeof AuthRoute
   ContactRoute: typeof ContactRoute
   CourseRoute: typeof CourseRoute
+  CoursesRoute: typeof CoursesRoute
+  CurriculumRoute: typeof CurriculumRoute
+  FaqsRoute: typeof FaqsRoute
+  LearningHubRoute: typeof LearningHubRoute
+  ResourcesRoute: typeof ResourcesRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
 }
 
@@ -211,6 +288,41 @@ declare module '@tanstack/react-router' {
       path: '/sitemap.xml'
       fullPath: '/sitemap.xml'
       preLoaderRoute: typeof SitemapDotxmlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/resources': {
+      id: '/resources'
+      path: '/resources'
+      fullPath: '/resources'
+      preLoaderRoute: typeof ResourcesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/learning-hub': {
+      id: '/learning-hub'
+      path: '/learning-hub'
+      fullPath: '/learning-hub'
+      preLoaderRoute: typeof LearningHubRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/faqs': {
+      id: '/faqs'
+      path: '/faqs'
+      fullPath: '/faqs'
+      preLoaderRoute: typeof FaqsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/curriculum': {
+      id: '/curriculum'
+      path: '/curriculum'
+      fullPath: '/curriculum'
+      preLoaderRoute: typeof CurriculumRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/courses': {
+      id: '/courses'
+      path: '/courses'
+      fullPath: '/courses'
+      preLoaderRoute: typeof CoursesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/course': {
@@ -260,6 +372,13 @@ declare module '@tanstack/react-router' {
       path: '/profile'
       fullPath: '/profile'
       preLoaderRoute: typeof AuthenticatedProfileRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/final-exam': {
+      id: '/_authenticated/final-exam'
+      path: '/final-exam'
+      fullPath: '/final-exam'
+      preLoaderRoute: typeof AuthenticatedFinalExamRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/facilitator': {
@@ -312,6 +431,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedCourseCompletedRoute: typeof AuthenticatedCourseCompletedRoute
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
   AuthenticatedFacilitatorRoute: typeof AuthenticatedFacilitatorRoute
+  AuthenticatedFinalExamRoute: typeof AuthenticatedFinalExamRoute
   AuthenticatedProfileRoute: typeof AuthenticatedProfileRoute
   AuthenticatedLessonsModuleIdRoute: typeof AuthenticatedLessonsModuleIdRoute
   AuthenticatedQuizModuleIdRoute: typeof AuthenticatedQuizModuleIdRoute
@@ -322,6 +442,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedCourseCompletedRoute: AuthenticatedCourseCompletedRoute,
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
   AuthenticatedFacilitatorRoute: AuthenticatedFacilitatorRoute,
+  AuthenticatedFinalExamRoute: AuthenticatedFinalExamRoute,
   AuthenticatedProfileRoute: AuthenticatedProfileRoute,
   AuthenticatedLessonsModuleIdRoute: AuthenticatedLessonsModuleIdRoute,
   AuthenticatedQuizModuleIdRoute: AuthenticatedQuizModuleIdRoute,
@@ -337,6 +458,11 @@ const rootRouteChildren: RootRouteChildren = {
   AuthRoute: AuthRoute,
   ContactRoute: ContactRoute,
   CourseRoute: CourseRoute,
+  CoursesRoute: CoursesRoute,
+  CurriculumRoute: CurriculumRoute,
+  FaqsRoute: FaqsRoute,
+  LearningHubRoute: LearningHubRoute,
+  ResourcesRoute: ResourcesRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
 }
 export const routeTree = rootRouteImport
