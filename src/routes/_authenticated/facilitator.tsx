@@ -200,6 +200,7 @@ function LessonsAdmin() {
           <div className="mt-4 space-y-3">
             <Input placeholder="Lesson title" value={form.title} onChange={(e) => setForm({ ...form, title: e.target.value })} />
             <Textarea placeholder="Content" value={form.content} onChange={(e) => setForm({ ...form, content: e.target.value })} />
+            <Input placeholder="YouTube video URL (optional)" value={form.video_url} onChange={(e) => setForm({ ...form, video_url: e.target.value })} />
             <Textarea placeholder="Code example (optional)" value={form.code_example} onChange={(e) => setForm({ ...form, code_example: e.target.value })} className="font-mono text-sm" />
             <Textarea placeholder="Practice exercise (optional)" value={form.exercise} onChange={(e) => setForm({ ...form, exercise: e.target.value })} />
             <Button onClick={add} disabled={!form.title || !form.content}>Add lesson</Button>
