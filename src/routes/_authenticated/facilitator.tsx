@@ -114,11 +114,15 @@ function ModulesAdmin() {
     queryFn: async () => (await supabase.from("modules").select("*").eq("course_id", courseId).order("position")).data ?? [],
   });
 
+  const [overview, setOverview] = useState("");
+  const [objectivesText, setObjectivesText] = useState("");
+
   async function add() {
     const pos = (modulesQ.data?.length ?? 0) + 1;
-    const { error } = await supabase.from("modules").insert({ course_id: courseId, title, description, position: pos });
+    const objectives = objectivesText.split("\n").map((s) => s.trim()).filter(Boolean);
+    const { error } = await supabase.from("modules").insert({ course_id: courseId, title, description, position: pos, overview: overview || null, objectives: objectives.length ? objectives : null });
     if (error) return toast.error(error.message);
-    setTitle(""); setDescription("");
+    setTitle(""); setDescription(""); setOverview(""); setObjectivesText("");
     toast.success("Module added");
     qc.invalidateQueries({ queryKey: ["fac-modules", courseId] });
   }
