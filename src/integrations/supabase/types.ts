@@ -328,6 +328,7 @@ export type Database = {
         Row: {
           correct_index: number
           created_at: string
+          explanation: string | null
           id: string
           module_id: string
           options: Json
@@ -337,6 +338,7 @@ export type Database = {
         Insert: {
           correct_index: number
           created_at?: string
+          explanation?: string | null
           id?: string
           module_id: string
           options: Json
@@ -346,6 +348,7 @@ export type Database = {
         Update: {
           correct_index?: number
           created_at?: string
+          explanation?: string | null
           id?: string
           module_id?: string
           options?: Json
