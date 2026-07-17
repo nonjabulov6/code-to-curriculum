@@ -114,11 +114,15 @@ function ModulesAdmin() {
     queryFn: async () => (await supabase.from("modules").select("*").eq("course_id", courseId).order("position")).data ?? [],
   });
 
+  const [overview, setOverview] = useState("");
+  const [objectivesText, setObjectivesText] = useState("");
+
   async function add() {
     const pos = (modulesQ.data?.length ?? 0) + 1;
-    const { error } = await supabase.from("modules").insert({ course_id: courseId, title, description, position: pos });
+    const objectives = objectivesText.split("\n").map((s) => s.trim()).filter(Boolean);
+    const { error } = await supabase.from("modules").insert({ course_id: courseId, title, description, position: pos, overview: overview || null, objectives: objectives.length ? objectives : null });
     if (error) return toast.error(error.message);
-    setTitle(""); setDescription("");
+    setTitle(""); setDescription(""); setOverview(""); setObjectivesText("");
     toast.success("Module added");
     qc.invalidateQueries({ queryKey: ["fac-modules", courseId] });
   }
@@ -140,7 +144,9 @@ function ModulesAdmin() {
         {courseId && (
           <div className="mt-4 grid gap-3 md:grid-cols-2">
             <Input placeholder="Title" value={title} onChange={(e) => setTitle(e.target.value)} />
-            <Input placeholder="Description" value={description} onChange={(e) => setDescription(e.target.value)} />
+            <Input placeholder="Short description" value={description} onChange={(e) => setDescription(e.target.value)} />
+            <Textarea className="md:col-span-2" placeholder="Module overview (shown above lessons)" value={overview} onChange={(e) => setOverview(e.target.value)} />
+            <Textarea className="md:col-span-2" placeholder="Learning objectives (one per line)" value={objectivesText} onChange={(e) => setObjectivesText(e.target.value)} />
             <Button className="md:col-span-2" onClick={add} disabled={!title}>Add module</Button>
           </div>
         )}
@@ -161,7 +167,7 @@ function LessonsAdmin() {
   const qc = useQueryClient();
   const modulesQ = useQuery({ queryKey: ["fac-modules-list"], queryFn: async () => (await supabase.from("modules").select("id,title").order("position")).data ?? [] });
   const [moduleId, setModuleId] = useState("");
-  const [form, setForm] = useState({ title: "", content: "", code_example: "", exercise: "" });
+  const [form, setForm] = useState({ title: "", content: "", code_example: "", exercise: "", video_url: "" });
   const lessonsQ = useQuery({
     queryKey: ["fac-lessons", moduleId],
     enabled: !!moduleId,
@@ -170,9 +176,9 @@ function LessonsAdmin() {
 
   async function add() {
     const pos = (lessonsQ.data?.length ?? 0) + 1;
-    const { error } = await supabase.from("lessons").insert({ ...form, module_id: moduleId, position: pos });
+    const { error } = await supabase.from("lessons").insert({ ...form, video_url: form.video_url || null, module_id: moduleId, position: pos });
     if (error) return toast.error(error.message);
-    setForm({ title: "", content: "", code_example: "", exercise: "" });
+    setForm({ title: "", content: "", code_example: "", exercise: "", video_url: "" });
     toast.success("Lesson added");
     qc.invalidateQueries({ queryKey: ["fac-lessons", moduleId] });
   }
@@ -194,6 +200,7 @@ function LessonsAdmin() {
           <div className="mt-4 space-y-3">
             <Input placeholder="Lesson title" value={form.title} onChange={(e) => setForm({ ...form, title: e.target.value })} />
             <Textarea placeholder="Content" value={form.content} onChange={(e) => setForm({ ...form, content: e.target.value })} />
+            <Input placeholder="YouTube video URL (optional)" value={form.video_url} onChange={(e) => setForm({ ...form, video_url: e.target.value })} />
             <Textarea placeholder="Code example (optional)" value={form.code_example} onChange={(e) => setForm({ ...form, code_example: e.target.value })} className="font-mono text-sm" />
             <Textarea placeholder="Practice exercise (optional)" value={form.exercise} onChange={(e) => setForm({ ...form, exercise: e.target.value })} />
             <Button onClick={add} disabled={!form.title || !form.content}>Add lesson</Button>
