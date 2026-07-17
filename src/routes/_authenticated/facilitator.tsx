@@ -167,7 +167,7 @@ function LessonsAdmin() {
   const qc = useQueryClient();
   const modulesQ = useQuery({ queryKey: ["fac-modules-list"], queryFn: async () => (await supabase.from("modules").select("id,title").order("position")).data ?? [] });
   const [moduleId, setModuleId] = useState("");
-  const [form, setForm] = useState({ title: "", content: "", code_example: "", exercise: "" });
+  const [form, setForm] = useState({ title: "", content: "", code_example: "", exercise: "", video_url: "" });
   const lessonsQ = useQuery({
     queryKey: ["fac-lessons", moduleId],
     enabled: !!moduleId,
@@ -176,9 +176,9 @@ function LessonsAdmin() {
 
   async function add() {
     const pos = (lessonsQ.data?.length ?? 0) + 1;
-    const { error } = await supabase.from("lessons").insert({ ...form, module_id: moduleId, position: pos });
+    const { error } = await supabase.from("lessons").insert({ ...form, video_url: form.video_url || null, module_id: moduleId, position: pos });
     if (error) return toast.error(error.message);
-    setForm({ title: "", content: "", code_example: "", exercise: "" });
+    setForm({ title: "", content: "", code_example: "", exercise: "", video_url: "" });
     toast.success("Lesson added");
     qc.invalidateQueries({ queryKey: ["fac-lessons", moduleId] });
   }
