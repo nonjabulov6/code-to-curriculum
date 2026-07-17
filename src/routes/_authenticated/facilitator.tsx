@@ -144,7 +144,9 @@ function ModulesAdmin() {
         {courseId && (
           <div className="mt-4 grid gap-3 md:grid-cols-2">
             <Input placeholder="Title" value={title} onChange={(e) => setTitle(e.target.value)} />
-            <Input placeholder="Description" value={description} onChange={(e) => setDescription(e.target.value)} />
+            <Input placeholder="Short description" value={description} onChange={(e) => setDescription(e.target.value)} />
+            <Textarea className="md:col-span-2" placeholder="Module overview (shown above lessons)" value={overview} onChange={(e) => setOverview(e.target.value)} />
+            <Textarea className="md:col-span-2" placeholder="Learning objectives (one per line)" value={objectivesText} onChange={(e) => setObjectivesText(e.target.value)} />
             <Button className="md:col-span-2" onClick={add} disabled={!title}>Add module</Button>
           </div>
         )}
