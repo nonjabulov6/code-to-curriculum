@@ -103,6 +103,48 @@ export type Database = {
           },
         ]
       }
+      lesson_progress: {
+        Row: {
+          id: string
+          lesson_id: string
+          module_id: string
+          user_id: string
+          viewed: boolean
+          viewed_at: string
+        }
+        Insert: {
+          id?: string
+          lesson_id: string
+          module_id: string
+          user_id: string
+          viewed?: boolean
+          viewed_at?: string
+        }
+        Update: {
+          id?: string
+          lesson_id?: string
+          module_id?: string
+          user_id?: string
+          viewed?: boolean
+          viewed_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "lesson_progress_lesson_id_fkey"
+            columns: ["lesson_id"]
+            isOneToOne: false
+            referencedRelation: "lessons"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "lesson_progress_module_id_fkey"
+            columns: ["module_id"]
+            isOneToOne: false
+            referencedRelation: "modules"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       lessons: {
         Row: {
           code_example: string | null
@@ -113,6 +155,7 @@ export type Database = {
           module_id: string
           position: number
           title: string
+          video_url: string | null
         }
         Insert: {
           code_example?: string | null
@@ -123,6 +166,7 @@ export type Database = {
           module_id: string
           position?: number
           title: string
+          video_url?: string | null
         }
         Update: {
           code_example?: string | null
@@ -133,6 +177,7 @@ export type Database = {
           module_id?: string
           position?: number
           title?: string
+          video_url?: string | null
         }
         Relationships: [
           {
@@ -182,6 +227,8 @@ export type Database = {
           created_at: string
           description: string | null
           id: string
+          objectives: string[] | null
+          overview: string | null
           position: number
           title: string
         }
@@ -190,6 +237,8 @@ export type Database = {
           created_at?: string
           description?: string | null
           id?: string
+          objectives?: string[] | null
+          overview?: string | null
           position?: number
           title: string
         }
@@ -198,6 +247,8 @@ export type Database = {
           created_at?: string
           description?: string | null
           id?: string
+          objectives?: string[] | null
+          overview?: string | null
           position?: number
           title?: string
         }
