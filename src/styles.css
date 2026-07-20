@@ -84,7 +84,8 @@
   --ring: oklch(0.52 0.19 258);
 
   --gradient-hero: linear-gradient(135deg, oklch(0.52 0.19 258) 0%, oklch(0.65 0.18 255) 100%);
-  --gradient-subtle: linear-gradient(180deg, oklch(0.98 0.01 250) 0%, oklch(1 0 0) 100%);
+  --gradient-subtle: linear-gradient(180deg, oklch(0.97 0.02 255) 0%, oklch(1 0 0) 100%);
+  --gradient-page: radial-gradient(ellipse at top, oklch(0.96 0.03 255) 0%, oklch(0.99 0.005 240) 55%);
 }
 
 .dark {
@@ -126,5 +127,6 @@
 
 @utility bg-hero-gradient { background-image: var(--gradient-hero); }
 @utility bg-subtle-gradient { background-image: var(--gradient-subtle); }
+@utility bg-page-gradient { background-image: var(--gradient-page); }
 @utility shadow-elegant { box-shadow: var(--shadow-elegant); }
 @utility shadow-card { box-shadow: var(--shadow-card); }
