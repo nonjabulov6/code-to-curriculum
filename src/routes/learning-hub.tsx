@@ -40,11 +40,19 @@ function HubPage() {
       <section className="mx-auto max-w-5xl px-4 py-12 space-y-10">
         {topics.map((t) => (
           <Card key={t.name} className="overflow-hidden p-0 shadow-card">
+            <div className="relative aspect-[21/6] overflow-hidden">
+              <img src={t.image} alt={`${t.name} learning`} width={1600} height={457} loading="lazy" className="h-full w-full object-cover" />
+              <div className="absolute inset-0 bg-gradient-to-r from-slate-950/75 via-slate-900/50 to-transparent" />
+              <div className="absolute inset-0 flex items-center px-8">
+                <div className="text-white">
+                  <t.icon className="h-8 w-8" />
+                  <h2 className="mt-2 font-display text-3xl font-bold">{t.name} Basics</h2>
+                </div>
+              </div>
+            </div>
             <div className="grid gap-0 md:grid-cols-2">
               <div className="p-8">
-                <t.icon className={`h-10 w-10 ${t.color}`} />
-                <h2 className="mt-3 font-display text-2xl font-bold">{t.name} Basics</h2>
-                <p className="mt-2 text-muted-foreground">{t.desc}</p>
+                <p className="text-muted-foreground">{t.desc}</p>
                 <h3 className="mt-6 text-sm font-semibold">Starter code</h3>
                 <pre className="mt-2 overflow-x-auto rounded-lg bg-muted p-4 text-xs"><code>{t.starter}</code></pre>
                 <h3 className="mt-6 text-sm font-semibold">Practice exercise</h3>
