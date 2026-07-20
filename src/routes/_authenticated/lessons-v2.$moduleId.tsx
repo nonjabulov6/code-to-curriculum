@@ -245,6 +245,22 @@ function LessonV2Page() {
                     { title: "Verify", content: "Check your understanding with quick knowledge checks throughout the page." }
                   ]},
                   { type: "card", title: "Key Takeaway", content: "Consistency is more important than intensity. Spending 10 minutes every day is better than 5 hours once a week.", variant: "default" },
+                  { type: "heading", level: 2, content: "Check Your Understanding" },
+                  { type: "quiz", 
+                    question: "What is the primary benefit of microlearning according to the content above?", 
+                    options: [
+                      "It allows you to skip difficult topics.",
+                      "It helps you retain more knowledge by breaking it into small chunks.",
+                      "It makes the course look longer than it is.",
+                      "It requires less effort from the learner."
+                    ], 
+                    correctIndex: 1, 
+                    explanation: "Microlearning focuses on short, focused bursts of content, which aligns with how our brains process and retain new information most effectively." 
+                  },
+                  { type: "reflection", 
+                    prompt: "Think about a time you tried to learn something new. Did you prefer long sessions or short, frequent ones? Why?", 
+                    feedback: "Most learners find that frequent, shorter sessions reduce cognitive load and lead to better long-term retention, which is why we've designed this LMS this way!" 
+                  },
                   { type: "code", language: "javascript", title: "Example Logic", code: "function learn(concept) {\n  const active = true;\n  if (active) {\n    return 'Knowledge Retained';\n  }\n  return 'Forgotten';\n}" }
                 ]} />
               ) : (

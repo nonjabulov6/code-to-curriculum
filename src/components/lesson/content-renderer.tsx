@@ -2,6 +2,8 @@ import { ReactNode } from "react";
 import { Callout } from "./callout";
 import { LessonCard } from "./lesson-card";
 import { StepList } from "./step-list";
+import { KnowledgeCheck } from "./knowledge-check";
+import { Reflection } from "./reflection";
 
 type ContentBlock = 
   | { type: "text"; content: string }
@@ -10,7 +12,9 @@ type ContentBlock =
   | { type: "card"; title?: string; content: string; variant?: "default" | "outline" | "subtle" }
   | { type: "steps"; steps: { title: string; content: string }[] }
   | { type: "code"; language?: string; code: string; title?: string }
-  | { type: "list"; items: string[]; ordered?: boolean };
+  | { type: "list"; items: string[]; ordered?: boolean }
+  | { type: "quiz"; question: string; options: string[]; correctIndex: number; explanation?: string }
+  | { type: "reflection"; prompt: string; placeholder?: string; feedback?: string };
 
 interface ContentRendererProps {
   content: string | ContentBlock[];
@@ -90,6 +94,27 @@ function ContentBlocks({ blocks }: { blocks: ContentBlock[] }) {
                   <li key={j} className="text-lg text-muted-foreground">{item}</li>
                 ))}
               </ListTag>
+            );
+
+          case "quiz":
+            return (
+              <KnowledgeCheck 
+                key={i}
+                question={block.question}
+                options={block.options}
+                correctIndex={block.correctIndex}
+                explanation={block.explanation}
+              />
+            );
+
+          case "reflection":
+            return (
+              <Reflection 
+                key={i}
+                prompt={block.prompt}
+                placeholder={block.placeholder}
+                feedback={block.feedback}
+              />
             );
 
           default:
