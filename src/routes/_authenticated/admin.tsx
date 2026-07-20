@@ -34,12 +34,14 @@ function AdminPage() {
             <TabsTrigger value="quiz">Quiz</TabsTrigger>
             <TabsTrigger value="students">Students</TabsTrigger>
             <TabsTrigger value="messages">Messages</TabsTrigger>
+            <TabsTrigger value="surveys">Surveys</TabsTrigger>
           </TabsList>
           <TabsContent value="modules"><ModulesAdmin /></TabsContent>
           <TabsContent value="lessons"><LessonsAdmin /></TabsContent>
           <TabsContent value="quiz"><QuizAdmin /></TabsContent>
           <TabsContent value="students"><StudentsAdmin /></TabsContent>
           <TabsContent value="messages"><MessagesAdmin /></TabsContent>
+          <TabsContent value="surveys"><SurveysAdmin /></TabsContent>
         </Tabs>
       </section>
     </PageShell>
