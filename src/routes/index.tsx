@@ -3,6 +3,7 @@ import { PageShell } from "@/components/page-shell";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { ArrowRight, BookOpen, Code2, Database, Palette, Sparkles, Users, Zap, Star } from "lucide-react";
+import heroLearning from "@/assets/hero-learning.jpg";
 
 export const Route = createFileRoute("/")({
   head: () => ({
