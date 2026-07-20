@@ -365,6 +365,54 @@ export type Database = {
           },
         ]
       }
+      surveys: {
+        Row: {
+          created_at: string
+          difficulty_rating: number | null
+          email: string | null
+          favourite_module: string | null
+          full_name: string
+          id: string
+          liked_most: string | null
+          overall_rating: number | null
+          quiz_difficulty: number | null
+          suggestions: string | null
+          user_id: string | null
+          video_usefulness: number | null
+          would_recommend: boolean | null
+        }
+        Insert: {
+          created_at?: string
+          difficulty_rating?: number | null
+          email?: string | null
+          favourite_module?: string | null
+          full_name: string
+          id?: string
+          liked_most?: string | null
+          overall_rating?: number | null
+          quiz_difficulty?: number | null
+          suggestions?: string | null
+          user_id?: string | null
+          video_usefulness?: number | null
+          would_recommend?: boolean | null
+        }
+        Update: {
+          created_at?: string
+          difficulty_rating?: number | null
+          email?: string | null
+          favourite_module?: string | null
+          full_name?: string
+          id?: string
+          liked_most?: string | null
+          overall_rating?: number | null
+          quiz_difficulty?: number | null
+          suggestions?: string | null
+          user_id?: string | null
+          video_usefulness?: number | null
+          would_recommend?: boolean | null
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
           created_at: string

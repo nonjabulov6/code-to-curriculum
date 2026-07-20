@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as SurveyRouteImport } from './routes/survey'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as ResourcesRouteImport } from './routes/resources'
 import { Route as LearningHubRouteImport } from './routes/learning-hub'
@@ -30,6 +31,11 @@ import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/
 import { Route as AuthenticatedQuizModuleIdRouteImport } from './routes/_authenticated/quiz.$moduleId'
 import { Route as AuthenticatedLessonsModuleIdRouteImport } from './routes/_authenticated/lessons.$moduleId'
 
+const SurveyRoute = SurveyRouteImport.update({
+  id: '/survey',
+  path: '/survey',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
   id: '/sitemap.xml',
   path: '/sitemap.xml',
@@ -146,6 +152,7 @@ export interface FileRoutesByFullPath {
   '/learning-hub': typeof LearningHubRoute
   '/resources': typeof ResourcesRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/survey': typeof SurveyRoute
   '/admin': typeof AuthenticatedAdminRoute
   '/course-completed': typeof AuthenticatedCourseCompletedRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
@@ -167,6 +174,7 @@ export interface FileRoutesByTo {
   '/learning-hub': typeof LearningHubRoute
   '/resources': typeof ResourcesRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/survey': typeof SurveyRoute
   '/admin': typeof AuthenticatedAdminRoute
   '/course-completed': typeof AuthenticatedCourseCompletedRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
@@ -190,6 +198,7 @@ export interface FileRoutesById {
   '/learning-hub': typeof LearningHubRoute
   '/resources': typeof ResourcesRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/survey': typeof SurveyRoute
   '/_authenticated/admin': typeof AuthenticatedAdminRoute
   '/_authenticated/course-completed': typeof AuthenticatedCourseCompletedRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
@@ -213,6 +222,7 @@ export interface FileRouteTypes {
     | '/learning-hub'
     | '/resources'
     | '/sitemap.xml'
+    | '/survey'
     | '/admin'
     | '/course-completed'
     | '/dashboard'
@@ -234,6 +244,7 @@ export interface FileRouteTypes {
     | '/learning-hub'
     | '/resources'
     | '/sitemap.xml'
+    | '/survey'
     | '/admin'
     | '/course-completed'
     | '/dashboard'
@@ -256,6 +267,7 @@ export interface FileRouteTypes {
     | '/learning-hub'
     | '/resources'
     | '/sitemap.xml'
+    | '/survey'
     | '/_authenticated/admin'
     | '/_authenticated/course-completed'
     | '/_authenticated/dashboard'
@@ -279,10 +291,18 @@ export interface RootRouteChildren {
   LearningHubRoute: typeof LearningHubRoute
   ResourcesRoute: typeof ResourcesRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
+  SurveyRoute: typeof SurveyRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/survey': {
+      id: '/survey'
+      path: '/survey'
+      fullPath: '/survey'
+      preLoaderRoute: typeof SurveyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/sitemap.xml': {
       id: '/sitemap.xml'
       path: '/sitemap.xml'
@@ -464,6 +484,7 @@ const rootRouteChildren: RootRouteChildren = {
   LearningHubRoute: LearningHubRoute,
   ResourcesRoute: ResourcesRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
+  SurveyRoute: SurveyRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

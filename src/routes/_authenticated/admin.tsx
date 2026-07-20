@@ -34,12 +34,14 @@ function AdminPage() {
             <TabsTrigger value="quiz">Quiz</TabsTrigger>
             <TabsTrigger value="students">Students</TabsTrigger>
             <TabsTrigger value="messages">Messages</TabsTrigger>
+            <TabsTrigger value="surveys">Surveys</TabsTrigger>
           </TabsList>
           <TabsContent value="modules"><ModulesAdmin /></TabsContent>
           <TabsContent value="lessons"><LessonsAdmin /></TabsContent>
           <TabsContent value="quiz"><QuizAdmin /></TabsContent>
           <TabsContent value="students"><StudentsAdmin /></TabsContent>
           <TabsContent value="messages"><MessagesAdmin /></TabsContent>
+          <TabsContent value="surveys"><SurveysAdmin /></TabsContent>
         </Tabs>
       </section>
     </PageShell>
@@ -250,6 +252,42 @@ function MessagesAdmin() {
         </Card>
       ))}
       {q.data?.length === 0 && <Card className="p-8 text-center text-muted-foreground">No messages yet.</Card>}
+    </div>
+  );
+}
+
+function SurveysAdmin() {
+  const q = useQuery({
+    queryKey: ["admin-surveys"],
+    queryFn: async () => {
+      const { data } = await supabase.from("surveys").select("*").order("created_at", { ascending: false });
+      return data ?? [];
+    },
+  });
+  return (
+    <div className="mt-4 space-y-2">
+      {q.data?.map((s) => (
+        <Card key={s.id} className="p-4 shadow-card">
+          <div className="flex flex-wrap justify-between gap-2">
+            <div className="font-semibold">
+              {s.full_name}
+              {s.email && <span className="text-muted-foreground"> · {s.email}</span>}
+            </div>
+            <div className="text-xs text-muted-foreground">{new Date(s.created_at).toLocaleString()}</div>
+          </div>
+          <div className="mt-2 grid gap-2 text-sm sm:grid-cols-2 md:grid-cols-3">
+            <div><span className="text-muted-foreground">Favourite:</span> {s.favourite_module ?? "—"}</div>
+            <div><span className="text-muted-foreground">Difficulty:</span> {s.difficulty_rating}/5</div>
+            <div><span className="text-muted-foreground">Videos:</span> {s.video_usefulness}/5</div>
+            <div><span className="text-muted-foreground">Quiz difficulty:</span> {s.quiz_difficulty}/5</div>
+            <div><span className="text-muted-foreground">Overall:</span> {s.overall_rating}/5 ★</div>
+            <div><span className="text-muted-foreground">Recommend:</span> {s.would_recommend ? "Yes" : "No"}</div>
+          </div>
+          {s.liked_most && <p className="mt-2 text-sm"><span className="font-medium">Liked most:</span> {s.liked_most}</p>}
+          {s.suggestions && <p className="mt-1 text-sm"><span className="font-medium">Suggestions:</span> {s.suggestions}</p>}
+        </Card>
+      ))}
+      {q.data?.length === 0 && <Card className="p-8 text-center text-muted-foreground">No survey responses yet.</Card>}
     </div>
   );
 }

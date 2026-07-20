@@ -15,6 +15,7 @@ const publicLinks = [
   { to: "/resources", label: "Resources" },
   { to: "/faqs", label: "FAQs" },
   { to: "/contact", label: "Contact" },
+  { to: "/survey", label: "Student Survey" },
 ] as const;
 
 export function SiteNav() {

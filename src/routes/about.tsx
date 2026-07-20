@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { PageShell } from "@/components/page-shell";
 import { Card } from "@/components/ui/card";
 import { Target, Eye, Heart } from "lucide-react";
+import aboutMission from "@/assets/about-mission.jpg";
 
 export const Route = createFileRoute("/about")({
   head: () => ({
@@ -35,6 +36,7 @@ function AboutPage() {
       </section>
 
       <section className="mx-auto max-w-5xl px-4 py-16">
+        <img src={aboutMission} alt="LearnHub Tech mentors and students collaborating" width={1400} height={900} loading="lazy" className="mb-12 w-full rounded-2xl shadow-elegant" />
         <div className="grid gap-6 md:grid-cols-3">
           <Card className="p-6 shadow-card">
             <Target className="h-8 w-8 text-primary" />
