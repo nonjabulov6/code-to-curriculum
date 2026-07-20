@@ -17,7 +17,8 @@ import {
   BookOpen, 
   Clock, 
   BarChart,
-  Home
+  Home,
+  List
 } from "lucide-react";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
@@ -37,6 +38,32 @@ function LessonV2Page() {
   const qc = useQueryClient();
   const [activeLessonId, setActiveLessonId] = useState<string | null>(null);
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [toc, setToc] = useState<{ id: string; text: string; level: number }[]>([]);
+
+  // Dynamic TOC Generation
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      const headings = document.querySelectorAll("#lesson-content h2, #lesson-content h3");
+      const newToc = Array.from(headings).map((h, i) => {
+        const id = h.id || `heading-${i}`;
+        h.id = id;
+        return {
+          id,
+          text: h.textContent || "",
+          level: parseInt(h.tagName.substring(1)),
+        };
+      });
+      setToc(newToc);
+    }, 100);
+    return () => clearTimeout(timer);
+  }, [activeLessonId]);
+
+  // Accessibility: Focus management when changing lessons
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    const mainHeading = document.querySelector("h1");
+    if (mainHeading) mainHeading.focus();
+  }, [activeLessonId]);
 
   const q = useQuery({
     queryKey: ["module-lessons-v2", moduleId, user?.id],
@@ -210,7 +237,10 @@ function LessonV2Page() {
                   </span>
                 )}
               </div>
-              <h1 className="font-display text-4xl font-extrabold tracking-tight sm:text-5xl text-foreground">
+              <h1 
+                tabIndex={-1} 
+                className="font-display text-4xl font-extrabold tracking-tight sm:text-5xl text-foreground outline-none focus:ring-2 focus:ring-primary/20 rounded-lg"
+              >
                 {active?.title}
               </h1>
             </div>
@@ -229,8 +259,31 @@ function LessonV2Page() {
               </Callout>
             )}
 
+            {/* Table of Contents (Desktop only) */}
+            {toc.length > 0 && (
+              <div className="mb-10 rounded-2xl border bg-muted/30 p-6 lg:hidden">
+                <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-muted-foreground mb-4">
+                  <List className="h-4 w-4" /> Table of Contents
+                </div>
+                <nav className="space-y-2">
+                  {toc.map((item) => (
+                    <a 
+                      key={item.id} 
+                      href={`#${item.id}`}
+                      className={cn(
+                        "block text-sm hover:text-primary transition-colors",
+                        item.level === 3 ? "pl-4 text-muted-foreground" : "font-medium"
+                      )}
+                    >
+                      {item.text}
+                    </a>
+                  ))}
+                </nav>
+              </div>
+            )}
+
             {/* Lesson Content Area */}
-            <article className="prose prose-slate dark:prose-invert max-w-none">
+            <article className="prose prose-slate dark:prose-invert max-w-none" id="lesson-content">
               {/* If it's the first lesson, show a demo of structured content */}
               {activeIndex === 0 ? (
                 <ContentRenderer content={[
@@ -283,6 +336,29 @@ function LessonV2Page() {
                 </div>
               )}
             </article>
+
+            {/* Right-side floating Table of Contents for Desktop */}
+            <div className="fixed top-32 right-8 hidden w-64 xl:block">
+              <div className="space-y-4">
+                <div className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
+                  <List className="h-3 w-3" /> On this page
+                </div>
+                <nav className="space-y-3 border-l-2 border-muted pl-4">
+                  {toc.map((item) => (
+                    <a 
+                      key={item.id} 
+                      href={`#${item.id}`}
+                      className={cn(
+                        "block text-xs hover:text-primary transition-colors",
+                        item.level === 3 ? "text-muted-foreground" : "font-semibold"
+                      )}
+                    >
+                      {item.text}
+                    </a>
+                  ))}
+                </nav>
+              </div>
+            </div>
 
             {/* Bottom Navigation */}
             <div className="mt-16 flex flex-col items-center justify-between gap-6 border-t pt-10 sm:flex-row">
