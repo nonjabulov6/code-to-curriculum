@@ -29,9 +29,9 @@ const features = [
 ];
 
 const testimonials = [
-  { name: "Thandi M.", role: "Grade 12 student", quote: "LearnHub made HTML and CSS finally click for me. The step-by-step exercises are the best." },
-  { name: "Sipho K.", role: "First-year Computer Science", quote: "The SQL module gave me an edge in my database course. Highly recommend to any beginner." },
-  { name: "Ayesha P.", role: "Self-learner", quote: "Clean interface, clear content. I finished the JavaScript module in a weekend." },
+  { name: "Lerato M.", role: "Grade 11 student", quote: "The HTML module was easy to follow, and the videos helped me understand coding for the first time." },
+  { name: "Sipho D.", role: "Grade 12 student", quote: "The quizzes and practice exercises helped me build confidence in web development." },
+  { name: "Ayesha P.", role: "First-year university", quote: "Clean interface, clear content. I finished the JavaScript module in a weekend." },
 ];
 
 function HomePage() {
