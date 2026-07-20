@@ -24,6 +24,7 @@ import { cn } from "@/lib/utils";
 import { Callout } from "@/components/lesson/callout";
 import { LessonCard } from "@/components/lesson/lesson-card";
 import { StepList } from "@/components/lesson/step-list";
+import { ContentRenderer } from "@/components/lesson/content-renderer";
 
 export const Route = createFileRoute("/_authenticated/lessons-v2/$moduleId")({
   head: () => ({ meta: [{ title: "Lesson Redesign — LearnHub Tech" }] }),
@@ -230,38 +231,41 @@ function LessonV2Page() {
 
             {/* Lesson Content Area */}
             <article className="prose prose-slate dark:prose-invert max-w-none">
-              {/* This is where the structured content will go in Phase 3 */}
-              <div className="space-y-8">
-                <p className="text-xl leading-relaxed text-muted-foreground">
-                  {active?.content || "No content available for this lesson yet."}
-                </p>
+              {/* If it's the first lesson, show a demo of structured content */}
+              {activeIndex === 0 ? (
+                <ContentRenderer content={[
+                  { type: "text", content: "Welcome to the new lesson experience! This lesson demonstrates how we use structured blocks to create engaging, text-based learning without relying on video." },
+                  { type: "heading", level: 2, content: "Core Philosophy" },
+                  { type: "text", content: "We believe that active learning is superior to passive consumption. By breaking information into small, digestible chunks, we help you retain more knowledge in less time." },
+                  { type: "callout", calloutType: "tip", title: "Learning Tip", content: "Try to explain what you've learned to someone else. This 'Feynman Technique' is one of the most effective ways to solidify new concepts." },
+                  { type: "heading", level: 3, content: "How it works" },
+                  { type: "steps", steps: [
+                    { title: "Read & Absorb", content: "Go through the text-based sections at your own pace." },
+                    { title: "Interact", content: "Engage with the callouts, cards, and interactive exercises." },
+                    { title: "Verify", content: "Check your understanding with quick knowledge checks throughout the page." }
+                  ]},
+                  { type: "card", title: "Key Takeaway", content: "Consistency is more important than intensity. Spending 10 minutes every day is better than 5 hours once a week.", variant: "default" },
+                  { type: "code", language: "javascript", title: "Example Logic", code: "function learn(concept) {\n  const active = true;\n  if (active) {\n    return 'Knowledge Retained';\n  }\n  return 'Forgotten';\n}" }
+                ]} />
+              ) : (
+                <div className="space-y-8">
+                  <ContentRenderer content={active?.content || ""} />
 
-                {active?.code_example && (
-                  <LessonCard title="Code Example">
-                    <pre className="overflow-x-auto rounded-lg bg-slate-950 p-4 text-sm text-slate-50 font-mono">
-                      <code>{active.code_example}</code>
-                    </pre>
-                  </LessonCard>
-                )}
+                  {active?.code_example && (
+                    <LessonCard title="Code Example">
+                      <pre className="overflow-x-auto rounded-lg bg-slate-950 p-4 text-sm text-slate-50 font-mono">
+                        <code>{active.code_example}</code>
+                      </pre>
+                    </LessonCard>
+                  )}
 
-                {active?.exercise && (
-                  <Callout type="tip" title="Practice Exercise">
-                    {active.exercise}
-                  </Callout>
-                )}
-                
-                {/* Example of a StepList for redesign verification */}
-                <div className="mt-12">
-                  <h3 className="font-display text-2xl font-bold mb-6">Key Learning Steps</h3>
-                  <StepList 
-                    steps={[
-                      { title: "Review Concepts", content: "Read through the text and analyze the visual examples provided." },
-                      { title: "Try the Code", content: "Copy the code examples into your editor and see how they work." },
-                      { title: "Complete the Quiz", content: "Test your knowledge with the interactive checkpoints throughout the lesson." }
-                    ]}
-                  />
+                  {active?.exercise && (
+                    <Callout type="tip" title="Practice Exercise">
+                      {active.exercise}
+                    </Callout>
+                  )}
                 </div>
-              </div>
+              )}
             </article>
 
             {/* Bottom Navigation */}
