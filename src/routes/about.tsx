@@ -26,17 +26,19 @@ const values = [
 function AboutPage() {
   return (
     <PageShell>
-      <section className="bg-subtle-gradient">
-        <div className="mx-auto max-w-4xl px-4 py-20 text-center">
-          <h1 className="font-display text-5xl font-bold md:text-6xl">About <span className="bg-hero-gradient bg-clip-text text-transparent">LearnHub Tech</span></h1>
-          <p className="mx-auto mt-6 max-w-2xl text-lg text-muted-foreground">
+      <section className="relative isolate overflow-hidden">
+        <img src={aboutMission} alt="Students collaborating in a modern classroom" width={1600} height={1008} className="absolute inset-0 -z-20 h-full w-full object-cover" />
+        <div className="absolute inset-0 -z-10 bg-gradient-to-r from-slate-950/85 via-slate-900/70 to-primary/40" />
+        <div className="mx-auto max-w-4xl px-4 py-24 text-center text-white">
+          <h1 className="font-display text-5xl font-bold md:text-6xl">About <span className="text-primary-glow">LearnHub Tech</span></h1>
+          <p className="mx-auto mt-6 max-w-2xl text-lg text-white/85">
             We're an online learning platform built for South African high school and first-year university students who want to build a career in tech — starting with the fundamentals.
           </p>
         </div>
       </section>
 
       <section className="mx-auto max-w-5xl px-4 py-16">
-        <img src={aboutMission} alt="LearnHub Tech mentors and students collaborating" width={1400} height={900} loading="lazy" className="mb-12 w-full rounded-2xl shadow-elegant" />
+        <img src={aboutMission} alt="LearnHub Tech students collaborating" width={1600} height={1008} loading="lazy" className="mb-12 w-full rounded-2xl object-cover shadow-elegant" />
         <div className="grid gap-6 md:grid-cols-3">
           <Card className="p-6 shadow-card">
             <Target className="h-8 w-8 text-primary" />
