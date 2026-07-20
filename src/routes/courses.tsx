@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { supabase } from "@/integrations/supabase/client";
 import { GraduationCap, Clock, BarChart3 } from "lucide-react";
+import modulesIcons from "@/assets/modules-icons.jpg";
 
 export const Route = createFileRoute("/courses")({
   head: () => ({
@@ -36,6 +37,7 @@ function CoursesPage() {
         </div>
       </section>
       <section className="mx-auto max-w-5xl px-4 py-12">
+        <img src={modulesIcons} alt="HTML CSS JavaScript SQL icons" width={1400} height={900} loading="lazy" className="mx-auto mb-10 w-full max-w-3xl rounded-xl shadow-card" />
         <div className="grid gap-6 md:grid-cols-2">
           {(q.data ?? []).map((c) => (
             <Card key={c.id} className="p-6 shadow-card">

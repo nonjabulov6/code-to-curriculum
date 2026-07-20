@@ -66,26 +66,13 @@ function HomePage() {
             </div>
           </div>
           <div className="relative">
-            <div className="rounded-2xl border border-border bg-card p-6 shadow-elegant">
-              <div className="flex items-center gap-2 border-b border-border pb-3">
-                <div className="h-3 w-3 rounded-full bg-destructive/70" />
-                <div className="h-3 w-3 rounded-full bg-amber-400" />
-                <div className="h-3 w-3 rounded-full bg-success" />
-                <span className="ml-2 text-xs text-muted-foreground">lesson.html</span>
-              </div>
-              <pre className="mt-4 overflow-x-auto text-sm leading-relaxed">
-<code>{`<!DOCTYPE html>
-<html>
-  <head>
-    <title>Hello, LearnHub!</title>
-  </head>
-  <body>
-    <h1>Web Dev Fundamentals</h1>
-    <p>HTML · CSS · JS · SQL</p>
-  </body>
-</html>`}</code>
-              </pre>
-            </div>
+            <img
+              src={heroLearning}
+              alt="Students learning web development on laptops"
+              width={1600}
+              height={1000}
+              className="rounded-2xl border border-border shadow-elegant"
+            />
           </div>
         </div>
       </section>
