@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import React, { ReactNode } from "react";
 import { Callout } from "./callout";
 import { LessonCard } from "./lesson-card";
 import { StepList } from "./step-list";
