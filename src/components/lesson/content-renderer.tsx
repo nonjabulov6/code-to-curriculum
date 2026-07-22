@@ -47,7 +47,7 @@ function ContentBlocks({ blocks }: { blocks: ContentBlock[] }) {
             return <p key={i} className="text-lg leading-relaxed text-muted-foreground whitespace-pre-line">{block.content}</p>;
           
           case "heading":
-            const Tag = `h${block.level}` as keyof JSX.IntrinsicElements;
+            const Tag = `h${block.level}` as unknown as React.ElementType;
             const sizes = { 2: "text-3xl", 3: "text-2xl", 4: "text-xl" };
             return (
               <Tag key={i} className={`font-display font-bold mt-10 mb-4 ${sizes[block.level]}`}>
