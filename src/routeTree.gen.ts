@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as SurveyRouteImport } from './routes/survey'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as ResourcesRouteImport } from './routes/resources'
+import { Route as RedesignPreviewRouteImport } from './routes/redesign-preview'
 import { Route as LearningHubRouteImport } from './routes/learning-hub'
 import { Route as FaqsRouteImport } from './routes/faqs'
 import { Route as CurriculumRouteImport } from './routes/curriculum'
@@ -30,6 +31,7 @@ import { Route as AuthenticatedCourseCompletedRouteImport } from './routes/_auth
 import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
 import { Route as AuthenticatedQuizModuleIdRouteImport } from './routes/_authenticated/quiz.$moduleId'
 import { Route as AuthenticatedLessonsModuleIdRouteImport } from './routes/_authenticated/lessons.$moduleId'
+import { Route as AuthenticatedLessonsV2ModuleIdRouteImport } from './routes/_authenticated/lessons-v2.$moduleId'
 
 const SurveyRoute = SurveyRouteImport.update({
   id: '/survey',
@@ -44,6 +46,11 @@ const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
 const ResourcesRoute = ResourcesRouteImport.update({
   id: '/resources',
   path: '/resources',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RedesignPreviewRoute = RedesignPreviewRouteImport.update({
+  id: '/redesign-preview',
+  path: '/redesign-preview',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LearningHubRoute = LearningHubRouteImport.update({
@@ -139,6 +146,12 @@ const AuthenticatedLessonsModuleIdRoute =
     path: '/lessons/$moduleId',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedLessonsV2ModuleIdRoute =
+  AuthenticatedLessonsV2ModuleIdRouteImport.update({
+    id: '/lessons-v2/$moduleId',
+    path: '/lessons-v2/$moduleId',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -150,6 +163,7 @@ export interface FileRoutesByFullPath {
   '/curriculum': typeof CurriculumRoute
   '/faqs': typeof FaqsRoute
   '/learning-hub': typeof LearningHubRoute
+  '/redesign-preview': typeof RedesignPreviewRoute
   '/resources': typeof ResourcesRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/survey': typeof SurveyRoute
@@ -159,6 +173,7 @@ export interface FileRoutesByFullPath {
   '/facilitator': typeof AuthenticatedFacilitatorRoute
   '/final-exam': typeof AuthenticatedFinalExamRoute
   '/profile': typeof AuthenticatedProfileRoute
+  '/lessons-v2/$moduleId': typeof AuthenticatedLessonsV2ModuleIdRoute
   '/lessons/$moduleId': typeof AuthenticatedLessonsModuleIdRoute
   '/quiz/$moduleId': typeof AuthenticatedQuizModuleIdRoute
 }
@@ -172,6 +187,7 @@ export interface FileRoutesByTo {
   '/curriculum': typeof CurriculumRoute
   '/faqs': typeof FaqsRoute
   '/learning-hub': typeof LearningHubRoute
+  '/redesign-preview': typeof RedesignPreviewRoute
   '/resources': typeof ResourcesRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/survey': typeof SurveyRoute
@@ -181,6 +197,7 @@ export interface FileRoutesByTo {
   '/facilitator': typeof AuthenticatedFacilitatorRoute
   '/final-exam': typeof AuthenticatedFinalExamRoute
   '/profile': typeof AuthenticatedProfileRoute
+  '/lessons-v2/$moduleId': typeof AuthenticatedLessonsV2ModuleIdRoute
   '/lessons/$moduleId': typeof AuthenticatedLessonsModuleIdRoute
   '/quiz/$moduleId': typeof AuthenticatedQuizModuleIdRoute
 }
@@ -196,6 +213,7 @@ export interface FileRoutesById {
   '/curriculum': typeof CurriculumRoute
   '/faqs': typeof FaqsRoute
   '/learning-hub': typeof LearningHubRoute
+  '/redesign-preview': typeof RedesignPreviewRoute
   '/resources': typeof ResourcesRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/survey': typeof SurveyRoute
@@ -205,6 +223,7 @@ export interface FileRoutesById {
   '/_authenticated/facilitator': typeof AuthenticatedFacilitatorRoute
   '/_authenticated/final-exam': typeof AuthenticatedFinalExamRoute
   '/_authenticated/profile': typeof AuthenticatedProfileRoute
+  '/_authenticated/lessons-v2/$moduleId': typeof AuthenticatedLessonsV2ModuleIdRoute
   '/_authenticated/lessons/$moduleId': typeof AuthenticatedLessonsModuleIdRoute
   '/_authenticated/quiz/$moduleId': typeof AuthenticatedQuizModuleIdRoute
 }
@@ -220,6 +239,7 @@ export interface FileRouteTypes {
     | '/curriculum'
     | '/faqs'
     | '/learning-hub'
+    | '/redesign-preview'
     | '/resources'
     | '/sitemap.xml'
     | '/survey'
@@ -229,6 +249,7 @@ export interface FileRouteTypes {
     | '/facilitator'
     | '/final-exam'
     | '/profile'
+    | '/lessons-v2/$moduleId'
     | '/lessons/$moduleId'
     | '/quiz/$moduleId'
   fileRoutesByTo: FileRoutesByTo
@@ -242,6 +263,7 @@ export interface FileRouteTypes {
     | '/curriculum'
     | '/faqs'
     | '/learning-hub'
+    | '/redesign-preview'
     | '/resources'
     | '/sitemap.xml'
     | '/survey'
@@ -251,6 +273,7 @@ export interface FileRouteTypes {
     | '/facilitator'
     | '/final-exam'
     | '/profile'
+    | '/lessons-v2/$moduleId'
     | '/lessons/$moduleId'
     | '/quiz/$moduleId'
   id:
@@ -265,6 +288,7 @@ export interface FileRouteTypes {
     | '/curriculum'
     | '/faqs'
     | '/learning-hub'
+    | '/redesign-preview'
     | '/resources'
     | '/sitemap.xml'
     | '/survey'
@@ -274,6 +298,7 @@ export interface FileRouteTypes {
     | '/_authenticated/facilitator'
     | '/_authenticated/final-exam'
     | '/_authenticated/profile'
+    | '/_authenticated/lessons-v2/$moduleId'
     | '/_authenticated/lessons/$moduleId'
     | '/_authenticated/quiz/$moduleId'
   fileRoutesById: FileRoutesById
@@ -289,6 +314,7 @@ export interface RootRouteChildren {
   CurriculumRoute: typeof CurriculumRoute
   FaqsRoute: typeof FaqsRoute
   LearningHubRoute: typeof LearningHubRoute
+  RedesignPreviewRoute: typeof RedesignPreviewRoute
   ResourcesRoute: typeof ResourcesRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   SurveyRoute: typeof SurveyRoute
@@ -315,6 +341,13 @@ declare module '@tanstack/react-router' {
       path: '/resources'
       fullPath: '/resources'
       preLoaderRoute: typeof ResourcesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/redesign-preview': {
+      id: '/redesign-preview'
+      path: '/redesign-preview'
+      fullPath: '/redesign-preview'
+      preLoaderRoute: typeof RedesignPreviewRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/learning-hub': {
@@ -443,6 +476,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedLessonsModuleIdRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/lessons-v2/$moduleId': {
+      id: '/_authenticated/lessons-v2/$moduleId'
+      path: '/lessons-v2/$moduleId'
+      fullPath: '/lessons-v2/$moduleId'
+      preLoaderRoute: typeof AuthenticatedLessonsV2ModuleIdRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
   }
 }
 
@@ -453,6 +493,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedFacilitatorRoute: typeof AuthenticatedFacilitatorRoute
   AuthenticatedFinalExamRoute: typeof AuthenticatedFinalExamRoute
   AuthenticatedProfileRoute: typeof AuthenticatedProfileRoute
+  AuthenticatedLessonsV2ModuleIdRoute: typeof AuthenticatedLessonsV2ModuleIdRoute
   AuthenticatedLessonsModuleIdRoute: typeof AuthenticatedLessonsModuleIdRoute
   AuthenticatedQuizModuleIdRoute: typeof AuthenticatedQuizModuleIdRoute
 }
@@ -464,6 +505,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedFacilitatorRoute: AuthenticatedFacilitatorRoute,
   AuthenticatedFinalExamRoute: AuthenticatedFinalExamRoute,
   AuthenticatedProfileRoute: AuthenticatedProfileRoute,
+  AuthenticatedLessonsV2ModuleIdRoute: AuthenticatedLessonsV2ModuleIdRoute,
   AuthenticatedLessonsModuleIdRoute: AuthenticatedLessonsModuleIdRoute,
   AuthenticatedQuizModuleIdRoute: AuthenticatedQuizModuleIdRoute,
 }
@@ -482,6 +524,7 @@ const rootRouteChildren: RootRouteChildren = {
   CurriculumRoute: CurriculumRoute,
   FaqsRoute: FaqsRoute,
   LearningHubRoute: LearningHubRoute,
+  RedesignPreviewRoute: RedesignPreviewRoute,
   ResourcesRoute: ResourcesRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   SurveyRoute: SurveyRoute,
@@ -489,3 +532,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
