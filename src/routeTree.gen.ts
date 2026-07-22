@@ -23,6 +23,8 @@ import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthLearnerRouteImport } from './routes/auth.learner'
+import { Route as AuthFacilitatorRouteImport } from './routes/auth.facilitator'
 import { Route as AuthenticatedProfileRouteImport } from './routes/_authenticated/profile'
 import { Route as AuthenticatedFinalExamRouteImport } from './routes/_authenticated/final-exam'
 import { Route as AuthenticatedFacilitatorRouteImport } from './routes/_authenticated/facilitator'
@@ -102,6 +104,16 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthLearnerRoute = AuthLearnerRouteImport.update({
+  id: '/learner',
+  path: '/learner',
+  getParentRoute: () => AuthRoute,
+} as any)
+const AuthFacilitatorRoute = AuthFacilitatorRouteImport.update({
+  id: '/facilitator',
+  path: '/facilitator',
+  getParentRoute: () => AuthRoute,
+} as any)
 const AuthenticatedProfileRoute = AuthenticatedProfileRouteImport.update({
   id: '/profile',
   path: '/profile',
@@ -156,7 +168,7 @@ const AuthenticatedLessonsV2ModuleIdRoute =
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
-  '/auth': typeof AuthRoute
+  '/auth': typeof AuthRouteWithChildren
   '/contact': typeof ContactRoute
   '/course': typeof CourseRoute
   '/courses': typeof CoursesRoute
@@ -173,6 +185,8 @@ export interface FileRoutesByFullPath {
   '/facilitator': typeof AuthenticatedFacilitatorRoute
   '/final-exam': typeof AuthenticatedFinalExamRoute
   '/profile': typeof AuthenticatedProfileRoute
+  '/auth/facilitator': typeof AuthFacilitatorRoute
+  '/auth/learner': typeof AuthLearnerRoute
   '/lessons-v2/$moduleId': typeof AuthenticatedLessonsV2ModuleIdRoute
   '/lessons/$moduleId': typeof AuthenticatedLessonsModuleIdRoute
   '/quiz/$moduleId': typeof AuthenticatedQuizModuleIdRoute
@@ -180,7 +194,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
-  '/auth': typeof AuthRoute
+  '/auth': typeof AuthRouteWithChildren
   '/contact': typeof ContactRoute
   '/course': typeof CourseRoute
   '/courses': typeof CoursesRoute
@@ -197,6 +211,8 @@ export interface FileRoutesByTo {
   '/facilitator': typeof AuthenticatedFacilitatorRoute
   '/final-exam': typeof AuthenticatedFinalExamRoute
   '/profile': typeof AuthenticatedProfileRoute
+  '/auth/facilitator': typeof AuthFacilitatorRoute
+  '/auth/learner': typeof AuthLearnerRoute
   '/lessons-v2/$moduleId': typeof AuthenticatedLessonsV2ModuleIdRoute
   '/lessons/$moduleId': typeof AuthenticatedLessonsModuleIdRoute
   '/quiz/$moduleId': typeof AuthenticatedQuizModuleIdRoute
@@ -206,7 +222,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/about': typeof AboutRoute
-  '/auth': typeof AuthRoute
+  '/auth': typeof AuthRouteWithChildren
   '/contact': typeof ContactRoute
   '/course': typeof CourseRoute
   '/courses': typeof CoursesRoute
@@ -223,6 +239,8 @@ export interface FileRoutesById {
   '/_authenticated/facilitator': typeof AuthenticatedFacilitatorRoute
   '/_authenticated/final-exam': typeof AuthenticatedFinalExamRoute
   '/_authenticated/profile': typeof AuthenticatedProfileRoute
+  '/auth/facilitator': typeof AuthFacilitatorRoute
+  '/auth/learner': typeof AuthLearnerRoute
   '/_authenticated/lessons-v2/$moduleId': typeof AuthenticatedLessonsV2ModuleIdRoute
   '/_authenticated/lessons/$moduleId': typeof AuthenticatedLessonsModuleIdRoute
   '/_authenticated/quiz/$moduleId': typeof AuthenticatedQuizModuleIdRoute
@@ -249,6 +267,8 @@ export interface FileRouteTypes {
     | '/facilitator'
     | '/final-exam'
     | '/profile'
+    | '/auth/facilitator'
+    | '/auth/learner'
     | '/lessons-v2/$moduleId'
     | '/lessons/$moduleId'
     | '/quiz/$moduleId'
@@ -273,6 +293,8 @@ export interface FileRouteTypes {
     | '/facilitator'
     | '/final-exam'
     | '/profile'
+    | '/auth/facilitator'
+    | '/auth/learner'
     | '/lessons-v2/$moduleId'
     | '/lessons/$moduleId'
     | '/quiz/$moduleId'
@@ -298,6 +320,8 @@ export interface FileRouteTypes {
     | '/_authenticated/facilitator'
     | '/_authenticated/final-exam'
     | '/_authenticated/profile'
+    | '/auth/facilitator'
+    | '/auth/learner'
     | '/_authenticated/lessons-v2/$moduleId'
     | '/_authenticated/lessons/$moduleId'
     | '/_authenticated/quiz/$moduleId'
@@ -307,7 +331,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AboutRoute: typeof AboutRoute
-  AuthRoute: typeof AuthRoute
+  AuthRoute: typeof AuthRouteWithChildren
   ContactRoute: typeof ContactRoute
   CourseRoute: typeof CourseRoute
   CoursesRoute: typeof CoursesRoute
@@ -420,6 +444,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/auth/learner': {
+      id: '/auth/learner'
+      path: '/learner'
+      fullPath: '/auth/learner'
+      preLoaderRoute: typeof AuthLearnerRouteImport
+      parentRoute: typeof AuthRoute
+    }
+    '/auth/facilitator': {
+      id: '/auth/facilitator'
+      path: '/facilitator'
+      fullPath: '/auth/facilitator'
+      preLoaderRoute: typeof AuthFacilitatorRouteImport
+      parentRoute: typeof AuthRoute
+    }
     '/_authenticated/profile': {
       id: '/_authenticated/profile'
       path: '/profile'
@@ -513,11 +551,23 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
 const AuthenticatedRouteRouteWithChildren =
   AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
 
+interface AuthRouteChildren {
+  AuthFacilitatorRoute: typeof AuthFacilitatorRoute
+  AuthLearnerRoute: typeof AuthLearnerRoute
+}
+
+const AuthRouteChildren: AuthRouteChildren = {
+  AuthFacilitatorRoute: AuthFacilitatorRoute,
+  AuthLearnerRoute: AuthLearnerRoute,
+}
+
+const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AboutRoute: AboutRoute,
-  AuthRoute: AuthRoute,
+  AuthRoute: AuthRouteWithChildren,
   ContactRoute: ContactRoute,
   CourseRoute: CourseRoute,
   CoursesRoute: CoursesRoute,
