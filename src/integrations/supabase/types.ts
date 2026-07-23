@@ -367,48 +367,72 @@ export type Database = {
       }
       surveys: {
         Row: {
+          age_group: string | null
+          certificate_email: string | null
+          certificate_name: string | null
           created_at: string
           difficulty_rating: number | null
           email: string | null
           favourite_module: string | null
           full_name: string
           id: string
+          knowledge_before: string | null
           liked_most: string | null
+          nps_score: number | null
+          occupation: string | null
           overall_rating: number | null
           quiz_difficulty: number | null
+          responses: Json | null
           suggestions: string | null
           user_id: string | null
           video_usefulness: number | null
+          wants_certificate: boolean | null
           would_recommend: boolean | null
         }
         Insert: {
+          age_group?: string | null
+          certificate_email?: string | null
+          certificate_name?: string | null
           created_at?: string
           difficulty_rating?: number | null
           email?: string | null
           favourite_module?: string | null
           full_name: string
           id?: string
+          knowledge_before?: string | null
           liked_most?: string | null
+          nps_score?: number | null
+          occupation?: string | null
           overall_rating?: number | null
           quiz_difficulty?: number | null
+          responses?: Json | null
           suggestions?: string | null
           user_id?: string | null
           video_usefulness?: number | null
+          wants_certificate?: boolean | null
           would_recommend?: boolean | null
         }
         Update: {
+          age_group?: string | null
+          certificate_email?: string | null
+          certificate_name?: string | null
           created_at?: string
           difficulty_rating?: number | null
           email?: string | null
           favourite_module?: string | null
           full_name?: string
           id?: string
+          knowledge_before?: string | null
           liked_most?: string | null
+          nps_score?: number | null
+          occupation?: string | null
           overall_rating?: number | null
           quiz_difficulty?: number | null
+          responses?: Json | null
           suggestions?: string | null
           user_id?: string | null
           video_usefulness?: number | null
+          wants_certificate?: boolean | null
           would_recommend?: boolean | null
         }
         Relationships: []
