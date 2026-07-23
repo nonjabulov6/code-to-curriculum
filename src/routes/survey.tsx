@@ -107,7 +107,7 @@ const steps: StepDef[] = [
 
 type Ratings = Record<string, number>;
 
-function StarsInput({ value, onChange, size = 8 }: { value: number; onChange: (n: number) => void; size?: number }) {
+function StarsInput({ value, onChange }: { value: number; onChange: (n: number) => void }) {
   return (
     <div className="flex gap-1.5">
       {[1, 2, 3, 4, 5].map((n) => (
@@ -119,7 +119,7 @@ function StarsInput({ value, onChange, size = 8 }: { value: number; onChange: (n
           className="transition hover:scale-110"
         >
           <Star
-            className={`h-${size} w-${size} transition ${
+            className={`h-10 w-10 transition ${
               n <= value ? "fill-amber-400 text-amber-400" : "text-muted-foreground/30"
             }`}
           />
